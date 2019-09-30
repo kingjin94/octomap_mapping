@@ -167,8 +167,8 @@ OctomapServer::OctomapServer(ros::NodeHandle private_nh_)
     ROS_INFO("Publishing non-latched (topics are only prepared as needed, will only be re-published on map change");
 
   m_markerPub = m_nh.advertise<visualization_msgs::MarkerArray>("occupied_cells_vis_array", 1, m_latchedTopics);
-  m_binaryMapPub = m_nh.advertise<Octomap>("octomap_binary", 1, m_latchedTopics);
-  m_fullMapPub = m_nh.advertise<Octomap>("octomap_full", 1, m_latchedTopics);
+  m_binaryMapPub = m_nh.advertise<Octomap>("octomap_binary", 1, true);
+  m_fullMapPub = m_nh.advertise<Octomap>("octomap_full", 1, true);
   m_pointCloudPub = m_nh.advertise<sensor_msgs::PointCloud2>("octomap_point_cloud_centers", 1, m_latchedTopics);
   m_mapPub = m_nh.advertise<nav_msgs::OccupancyGrid>("projected_map", 5, m_latchedTopics);
   m_fmarkerPub = m_nh.advertise<visualization_msgs::MarkerArray>("free_cells_vis_array", 1, m_latchedTopics);
@@ -409,7 +409,8 @@ void OctomapServer::insertScan(const tf::Point& sensorOriginTf, const PCLPointCl
         updateMaxKey(key, m_updateBBXMax);
 
 #ifdef COLOR_OCTOMAP_SERVER // NB: Only read and interpret color if it's an occupied node
-        m_octree->averageNodeColor(it->x, it->y, it->z, /*r=*/it->r, /*g=*/it->g, /*b=*/it->b);
+		if(it->r!=0 || it->g!=0 || it->b!=0) // Only update if there has been something segmented
+			m_octree->averageNodeColor(it->x, it->y, it->z, /*r=*/it->r, /*g=*/it->g, /*b=*/it->b);
 #endif
       }
     } else {// ray longer than maxrange:;
