@@ -12,3 +12,7 @@ Kinetic/Melodic: [![Build Status](https://travis-ci.org/OctoMap/octomap_mapping.
 <!--- Melodic: [![Build Status](https://travis-ci.org/OctoMap/octomap_mapping.svg?branch=melodic-devel)](https://travis-ci.org/OctoMap/octomap_mapping)-->
 
 Imported from SVN, see https://code.google.com/p/alufr-ros-pkg/ for the previous versions.
+
+Changes
+------
+Adapted to work in https://github.com/kingjin94/enhanced_simulation by starting the octomap_server with a colored octree.
